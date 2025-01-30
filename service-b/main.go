@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 
@@ -45,7 +45,7 @@ func getCityFromCEP(cep string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 	var result map[string]interface{}
 	if err := json.Unmarshal(body, &result); err != nil {
 		return "", err
@@ -67,7 +67,7 @@ func getTemperature(city string) (float64, error) {
 	}
 	defer resp.Body.Close()
 
-	body, _ := ioutil.ReadAll(resp.Body)
+	body, _ := io.ReadAll(resp.Body)
 	var result map[string]interface{}
 	if err := json.Unmarshal(body, &result); err != nil {
 		return 0, err
