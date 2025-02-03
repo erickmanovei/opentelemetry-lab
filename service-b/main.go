@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/zipkin"
@@ -60,7 +61,10 @@ func getCityFromCEP(cep string) (string, error) {
 
 func getTemperature(city string) (float64, error) {
 	apiKey := "97307a62f20a4df9868201314241712"
-	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, city)
+
+	encodedCity := url.QueryEscape(city)
+
+	url := fmt.Sprintf("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, encodedCity)
 	resp, err := http.Get(url)
 	if err != nil {
 		return 0, err
